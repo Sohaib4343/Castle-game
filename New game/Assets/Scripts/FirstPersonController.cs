@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class FirstPersonController : MonoBehaviour
 {
+    private CharacterController controller;
+    public Animator animator;
+
     //Player movement variables
     [Header("Movement")]
     [SerializeField] private float speed = 5f;
-    private CharacterController controller;
     private Vector3 moveDirection;
     //Camera variables
     private Transform cam;
@@ -42,6 +45,7 @@ public class FirstPersonController : MonoBehaviour
     {
         //Component references
         controller = GetComponent<CharacterController>();
+        //animator = GetComponentInChildren<Animator>();
         cam = Camera.main.transform;
 
         //Hide the cursor
@@ -85,6 +89,16 @@ public class FirstPersonController : MonoBehaviour
 
         moveDirection = (cam.transform.forward * vertical + cam.transform.right * horizontal).normalized;
         moveDirection.y = 0f;
+
+        //Plays running animation when the player moves
+        if(moveDirection.x != 0 && moveDirection.z != 0)
+        {
+            animator.SetBool("IsMoving", true);
+        }
+        else
+        {
+            animator.SetBool("IsMoving", false);
+        }
 
         controller.Move(moveDirection * speed * Time.deltaTime);
     }
