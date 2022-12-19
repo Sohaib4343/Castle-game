@@ -8,6 +8,11 @@ public class FirstPersonController : MonoBehaviour
     private CharacterController controller;
     public Animator animator;
 
+    //Audio variables
+    [Header("Audio")]
+    public AudioSource walkingAudio;
+    public AudioSource jumpingAudio;
+
     //Player movement variables
     [Header("Movement")]
     [SerializeField] private float speed = 5f;
@@ -16,7 +21,7 @@ public class FirstPersonController : MonoBehaviour
     private Transform cam;
 
     //Gravity variables
-    private Vector3 velocity;
+    [SerializeField] private Vector3 velocity;
     private float gravity = -19.62f;
 
     //Ground check variables
@@ -33,6 +38,7 @@ public class FirstPersonController : MonoBehaviour
     [Header("Crouch")]
     public bool isCrouched;
     private Vector3 crouchHeight = new Vector3(0f, 0.9f, 0f);
+    [SerializeField] private float crouchSpeed = 2f;
 
     //Ceiling check variables
     [Header("Ceiling check")]
@@ -74,6 +80,18 @@ public class FirstPersonController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
+            jumpingAudio.Play();
+
+            //Plays jump animation when the player jumps
+            if (velocity.y > 0)
+            {
+                animator.SetBool("IsJumping", true);
+            }
+        }
+        //Transition back to idle animation from jump animation when the player's velocity is -2f
+        if (velocity.y == -2f)
+        {
+            animator.SetBool("IsJumping", false);
         }
 
         //Gravity
@@ -90,17 +108,26 @@ public class FirstPersonController : MonoBehaviour
         moveDirection = (cam.transform.forward * vertical + cam.transform.right * horizontal).normalized;
         moveDirection.y = 0f;
 
+        controller.Move(moveDirection * speed * Time.deltaTime);
+
         //Plays running animation when the player moves
-        if(moveDirection.x != 0 && moveDirection.z != 0)
+        if (moveDirection.x != 0 && moveDirection.z != 0)
         {
             animator.SetBool("IsMoving", true);
+            if (!walkingAudio.isPlaying && isGrounded)
+            {
+                walkingAudio.Play();
+            }
+
         }
         else
         {
             animator.SetBool("IsMoving", false);
+            if (walkingAudio.isPlaying || !isGrounded)
+            {
+                walkingAudio.Stop();
+            }
         }
-
-        controller.Move(moveDirection * speed * Time.deltaTime);
     }
 
     //Crouch function
@@ -112,6 +139,7 @@ public class FirstPersonController : MonoBehaviour
             isCrouched = true;
             controller.height = 1f;
             controller.center = new Vector3(0f, -0.27f, 0f);
+            speed = crouchSpeed;
         }
 
         if(Input.GetKeyUp(KeyCode.LeftShift) && isCrouched && isGrounded && !ceilingDetected)
@@ -120,6 +148,7 @@ public class FirstPersonController : MonoBehaviour
             isCrouched = false;
             controller.height = 2f;
             controller.center = new Vector3(0f, 0f, 0f);
+            speed = 5f;
         }
     }
 }
