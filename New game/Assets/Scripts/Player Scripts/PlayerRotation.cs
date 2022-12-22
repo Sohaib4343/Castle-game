@@ -7,10 +7,6 @@ public class PlayerRotation : MonoBehaviour
 {
     private Transform cam;
 
-    public Transform playerHands;
-
-    private CinemachineHardLockToTarget cinemachineCamera;
-
     void Start()
     {
         cam = Camera.main.transform;
@@ -18,13 +14,6 @@ public class PlayerRotation : MonoBehaviour
 
     void Update()
     {
-        //transform.rotation = Quaternion.Euler(0f, cam.eulerAngles.y, 0f);
-
-        playerHands.rotation = Quaternion.Euler(cam.eulerAngles.x, cam.eulerAngles.y, 0f);
-    }
-
-    private void Rotation()
-    {
-        //float yAngle = CinemachineHardLockToTarget.
+        transform.rotation = Quaternion.Euler(0f, cam.eulerAngles.y, 0f);
     }
 }

@@ -15,7 +15,7 @@ public class FirstPersonController : MonoBehaviour
 
     //Player movement variables
     [Header("Movement")]
-    [SerializeField] private float speed = 5f;
+    [SerializeField] private float speed = 7f;
     private Vector3 moveDirection;
     //Camera variables
     private Transform cam;
@@ -114,6 +114,7 @@ public class FirstPersonController : MonoBehaviour
         if (moveDirection.x != 0 && moveDirection.z != 0)
         {
             animator.SetBool("IsMoving", true);
+
             if (!walkingAudio.isPlaying && isGrounded)
             {
                 walkingAudio.Play();
@@ -148,7 +149,7 @@ public class FirstPersonController : MonoBehaviour
             isCrouched = false;
             controller.height = 2f;
             controller.center = new Vector3(0f, 0f, 0f);
-            speed = 5f;
+            speed = 7f;
         }
     }
 }
