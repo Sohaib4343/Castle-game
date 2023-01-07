@@ -16,54 +16,72 @@ public class PlayerAttack : MonoBehaviour
     public float attackRange;
     public LayerMask enemyLayer;
     public bool enemyDetected;
+    public RaycastHit hit;
 
-    public float nextAttack = 0.0f;
-    public float attackRate = 0.5f;
+    //Attack delay
+    public float attackDelay = 1f;
+    private float attackTimer = 0f;
 
+    //Health
     private EnemyHealth enemyHealth;
-    //public GameObject[] enemies;
 
     //Camera Shake
     private ShockWaveUnityEvent shockWave;
 
+    //Weapon equip
+    private WeaponPickAndDrop pickAndDrop;
+
     private void Awake()
     {
         enemyHealth = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyHealth>();
+        pickAndDrop = GetComponent<WeaponPickAndDrop>();
 
         shockWave = GetComponent<ShockWaveUnityEvent>();
     }
 
     void Update()
     {
-        enemyDetected = Physics.CheckSphere(attackPoint.position, attackRange, enemyLayer);
+        //Shoots a ray from the position of attackPoint
+        enemyDetected = Physics.Raycast(attackPoint.transform.position, attackPoint.transform.forward, out hit, attackRange, enemyLayer);
 
-        if (Input.GetMouseButtonDown(0) && enemyDetected && Time.time > nextAttack)
-        {
-            animator.SetBool("IsAttacking", true);
-            knifeSwingAudio.Play();
-            knifeHit.Play();
-            enemyHealth.TakeDamage(30f);
-            shockWave.ShockWaveEvent();
-            nextAttack = Time.time + attackRate;
-        }
-        else if (Input.GetMouseButtonDown(0) && !enemyDetected && Time.time > nextAttack)
-        {
-            animator.SetBool("IsAttacking", true);
-            knifeSwingAudio.Play();
-            shockWave.ShockWaveEvent();
-            nextAttack = Time.time + attackRate;
-        }
+        //Draw a ray to see it in the scene view
+        Debug.DrawRay(attackPoint.transform.position, attackPoint.transform.forward, Color.red);
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            animator.SetBool("IsAttacking", false);
-        }
+        attackTimer -= Time.deltaTime;
+
+        Attack();
     }
 
-    //Draw a wire sphere around the attack point
-    private void OnDrawGizmosSelected()
+    private void Attack()
     {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        if (pickAndDrop.isEquiped)
+        {
+            if (Input.GetMouseButtonDown(0) && enemyDetected && attackTimer <= 0/*&& Time.time > nextAttack*/)
+            {
+                //animator.SetBool("IsAttacking", true);
+                animator.SetBool("Attack", true);
+                knifeSwingAudio.Play();
+                knifeHit.Play();
+                enemyHealth.TakeDamage(30f);
+                shockWave.ShockWaveEvent();
+                attackTimer = attackDelay;
+            }
+            else if (Input.GetMouseButtonDown(0) && !enemyDetected && attackTimer <= 0/*&& Time.time > nextAttack*/)
+            {
+                //animator.SetBool("IsAttacking", true);
+                animator.SetBool("Attack", true);
+
+                knifeSwingAudio.Play();
+                shockWave.ShockWaveEvent();
+                attackTimer = attackDelay;
+                Debug.Log("Attack");
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                //animator.SetBool("IsAttacking", false);
+                animator.SetBool("Attack", false);
+            }
+        }
     }
 }

@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - CollectibleObjects
+  - Weapon
   layers:
   - Default
   - TransparentFX
@@ -17,10 +19,10 @@ TagManager:
   - Hands
   - Enemy
   - Player
-  - 
-  - 
-  - 
-  - 
+  - Enviornment
+  - Weapon
+  - WeaponEquipped
+  - GrabbableObject
   - 
   - 
   - 
