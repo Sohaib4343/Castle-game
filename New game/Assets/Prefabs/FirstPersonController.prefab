@@ -277,6 +277,7 @@ GameObject:
   - component: {fileID: 5103105144404546853}
   - component: {fileID: 5103105144404546852}
   - component: {fileID: 1173366000}
+  - component: {fileID: 1173366001}
   m_Layer: 10
   m_Name: FirstPersonController
   m_TagString: Player
@@ -872,7 +873,7 @@ MonoBehaviour:
   grabPoint: {fileID: 0}
   weaponLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 4352
 --- !u!114 &1173366000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -885,3 +886,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38d36ecbd866a4aecb0fd6924c37c262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1173366001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5103105144404546868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 120acfcd7338b4a5a9913a3b34de8bc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCameraTransform: {fileID: 0}
+  objectGrabPointTransform: {fileID: 0}
+  pickUpLayerMask:
+    serializedVersion: 2
+    m_Bits: 16384
+  grabbableObjects: {fileID: 0}
+  isGrabbed: 0
