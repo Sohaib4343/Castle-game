@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - CollectibleObjects
   - Weapon
+  - Stairs
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Weapon
   - WeaponEquipped
   - GrabbableObject
-  - 
+  - EquippedObjectLayer
   - 
   - 
   - 

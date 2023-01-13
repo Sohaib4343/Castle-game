@@ -7,6 +7,7 @@ public class FirstPersonController : MonoBehaviour
 {
     private CharacterController controller;
 
+    //Animator variables
     [Header("Animator")]
     public Animator handAnimator;
     public Animator cameraAnimator;
@@ -53,11 +54,17 @@ public class FirstPersonController : MonoBehaviour
     public LayerMask ceiling;
     public bool ceilingDetected;
 
+    //Script Refrences variables
+    private WeaponPickAndDrop weaponPickAndDrop;
+
     private void Awake()
     {
         //References
         controller = GetComponent<CharacterController>();
         cam = Camera.main.transform;
+
+        //Script Refrences
+        weaponPickAndDrop = GetComponent<WeaponPickAndDrop>();
     }
 
     void Start()
@@ -74,6 +81,7 @@ public class FirstPersonController : MonoBehaviour
         PlayerMovement();
         Crouch();
         PlayerLandingFunction();
+        PlaySwordJumpAnimation();
 
         //Checks if the player is on the ground
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, ground);
@@ -96,7 +104,7 @@ public class FirstPersonController : MonoBehaviour
             //Plays jump animation when the player jumps
             if (velocity.y > 0)
             {
-                handAnimator.SetBool("IsJumping", true);
+                //handAnimator.SetBool("IsJumping", true);
             }
         }
         //Transition back to idle animation from jump animation when the player's velocity is -2f
@@ -196,6 +204,14 @@ public class FirstPersonController : MonoBehaviour
         else
         {
             cameraAnimator.SetBool("IsLanded", false);
+        }
+    }
+
+    private void PlaySwordJumpAnimation()
+    {
+        if(isJumping && weaponPickAndDrop.isEquiped)
+        {
+            handAnimator.SetBool("IsJumping", true);
         }
     }
 

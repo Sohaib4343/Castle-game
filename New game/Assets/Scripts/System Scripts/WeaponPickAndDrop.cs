@@ -46,7 +46,7 @@ public class WeaponPickAndDrop : MonoBehaviour
         {
             animator.SetBool("Equip", true);
             animator.SetBool("IsEquiped", true);
-            sword.GetComponent<Rigidbody>().useGravity = false;
+            sword.GetComponent<Rigidbody>().useGravity = false; 
             sword.GetComponent<BoxCollider>().enabled = false;
             isEquiped = true;
             sword.transform.parent = handBone;

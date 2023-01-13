@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GrabbableObjects : MonoBehaviour
 {
+    private Animator grabbableObjectAnimator;
+
     private Rigidbody objectRigidBody;
 
     private Transform objectGrabPointTransform;
@@ -18,6 +20,7 @@ public class GrabbableObjects : MonoBehaviour
     private void Awake()
     {
         objectRigidBody = GetComponent<Rigidbody>();
+        grabbableObjectAnimator = GameObject.Find("GrabbablePoint").GetComponent<Animator>();
         //this.GetComponent<Collider>();
         cam = Camera.main.transform;
     }
@@ -46,7 +49,7 @@ public class GrabbableObjects : MonoBehaviour
         this.transform.localScale = Vector3.one;
 
         this.transform.SetParent(objectGrabPointTransform);
-
+        
         //this.transform.localScale = originalScale;
 
         this.transform.localScale = new Vector3(originalScale.x / objectGrabPointTransform.transform.localScale.x,
@@ -57,10 +60,12 @@ public class GrabbableObjects : MonoBehaviour
         objectRigidBody.angularVelocity = Vector3.zero;
         //coll.isTrigger = true;
         this.GetComponent<Collider>().isTrigger = true;
+        grabbableObjectAnimator.SetBool("ObjectGrabbed", true);
 
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.Euler(Vector3.zero);//gunContainer.localRotation;
         //objectRigidBody.velocity = new Vector3(0f, 0f, 0f);
+        this.gameObject.layer = LayerMask.NameToLayer("EquippedObjectLayer");
     }
 
     public void Drop()
@@ -72,8 +77,10 @@ public class GrabbableObjects : MonoBehaviour
         objectRigidBody.AddForce(cam.forward * 4f, ForceMode.Impulse);
         //coll.isTrigger = false;
         this.GetComponent<Collider>().isTrigger = false;
+        grabbableObjectAnimator.SetBool("ObjectGrabbed", false);
 
         this.transform.localScale = originalScale;
+        this.gameObject.layer = LayerMask.NameToLayer("GrabbableObject");
 
     }
 }

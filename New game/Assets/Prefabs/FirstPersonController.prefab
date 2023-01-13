@@ -278,6 +278,7 @@ GameObject:
   - component: {fileID: 5103105144404546852}
   - component: {fileID: 1173366000}
   - component: {fileID: 1173366001}
+  - component: {fileID: 1173366017}
   m_Layer: 10
   m_Name: FirstPersonController
   m_TagString: Player
@@ -905,3 +906,20 @@ MonoBehaviour:
     m_Bits: 16384
   grabbableObjects: {fileID: 0}
   isGrabbed: 0
+--- !u!114 &1173366017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5103105144404546868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4d366c3ef061460c9c403b74c40b2c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 20480
+  rayShootPoint: {fileID: 0}
+  highlight: {fileID: 0}
